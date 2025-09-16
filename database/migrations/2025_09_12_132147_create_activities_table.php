@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('activity_desc');
             $table->dateTime('activity_date');
             $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
-            $table->foreignId('volunteer_id')->constrained('volunteers')->onDelete('cascade');
             $table->timestamps();
         });
     }

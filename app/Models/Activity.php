@@ -13,7 +13,6 @@ class Activity extends Model
         'activity_desc',
         'activity_date',
         'location_id',
-        'volunteer_id'
     ];
 
     public function location() {
