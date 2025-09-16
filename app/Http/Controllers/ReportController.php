@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
+use App\Models\Report;
 use Illuminate\Http\Request;
 
 class ReportController extends Controller
@@ -11,7 +13,7 @@ class ReportController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Report::with('location')->get());
     }
 
     /**
@@ -27,7 +29,44 @@ class ReportController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'description' => 'required|string',
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
+            'loc_name' => 'required|string',
+            'loc_address' => 'required|string',
+        ]);
+
+        // Upload image
+        $path = $request->file('image')->store('reports', 'public');
+
+        // Generate random lat/lon (dummy sementara)
+        $lat = -90 + mt_rand() / mt_getrandmax() * 180;
+        $lon = -180 + mt_rand() / mt_getrandmax() * 360;
+
+        // Simpan lokasi baru
+        $location = Location::create([
+            'location_name'    => $data['loc_name'],
+            'location_address' => $data['loc_address'],
+            'latitude'         => $lat,
+            'longitude'        => $lon,
+        ]);
+
+        // Simpan report
+        $report = Report::create([
+            'reporter_name'    => $data['name'],
+            'reporter_email'   => $data['email'],
+            'reporter_address' => $data['address'],
+            'reporter_phone'   => $data['phone'],
+            'report_desc'      => $data['description'],
+            'image_path'       => $path,
+            'location_id'      => $location->id,
+        ]);
+
+        return response()->json($report->load('location'), 201);
     }
 
     /**
@@ -35,7 +74,8 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $report = Report::with(['location'])->findOrFail($id);
+        return response()->json($report);
     }
 
     /**
@@ -59,6 +99,8 @@ class ReportController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $report = Report::findOrFail($id);
+        $report->delete();
+        return response()->json(['message' => 'Report deleted']);
     }
 }

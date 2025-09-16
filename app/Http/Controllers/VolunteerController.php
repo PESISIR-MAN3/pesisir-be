@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 class VolunteerController extends Controller
@@ -11,7 +12,7 @@ class VolunteerController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Volunteer::with('activity')->get());
     }
 
     /**
@@ -27,7 +28,24 @@ class VolunteerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'volunteer_name' => 'required|string',
+            'volunteer_email' => 'required|email|unique:volunteers,volunteer_email',
+            'volunteer_address' => 'required|string',
+            'volunteer_phone' => 'required|string',
+            'volunteer_gender' => 'required|string',
+            'reason_desc' => 'required|string',
+            'activity_id' => 'required|exists:activities,id',
+        ]);
+
+        // cek apakah volunteer sudah ikut activity lain
+        $exists = Volunteer::where('email', $data['email'])->exists();
+        if ($exists) {
+            return response()->json(['message' => 'Volunteer already registered'], 400);
+        }
+
+        $volunteer = Volunteer::create($data);
+        return response()->json($volunteer, 201);
     }
 
     /**

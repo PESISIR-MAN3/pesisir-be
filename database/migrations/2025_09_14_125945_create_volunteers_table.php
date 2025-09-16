@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
             $table->string('volunteer_name');
-            $table->string('volunteer_email');
+            $table->string('volunteer_email')->unique();
             $table->text('volunteer_address');
             $table->string('volunteer_phone');
             $table->string('gender');

@@ -16,7 +16,7 @@ class Activity extends Model
     ];
 
     public function location() {
-        return $this->hasOne(Location::class);
+        return $this->belongsTo(Location::class, 'location_id');
     }
 
     public function volunteers() {

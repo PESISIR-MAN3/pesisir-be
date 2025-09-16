@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('activity_name');
             $table->text('activity_desc');
-            $table->dateTime('activity_date');
+            $table->date('activity_date');
             $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->timestamps();
         });

@@ -13,11 +13,12 @@ class Report extends Model
         'reporter_email',
         'reporter_address',
         'reporter_phone',
-        'photo_path',
+        'report_desc',
+        'image_path',
         'location_id',
     ];
 
     public function location() {
-        return $this->hasOne(Location::class);
+        return $this->belongsTo(Location::class, 'location_id');
     }
 }

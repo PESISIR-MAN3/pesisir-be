@@ -17,9 +17,9 @@ class Location extends Model
     ];
     
     public function activities() {
-        return $this->belongsTo(Activity::class);
+        return $this->hasOne(Activity::class);
     }
     public function reports() {
-        return $this->belongsToMany(Report::class);
+        return $this->hasMany(Report::class);
     }
 }
