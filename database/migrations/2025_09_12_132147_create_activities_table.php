@@ -16,6 +16,10 @@ return new class extends Migration
             $table->string('activity_name');
             $table->text('activity_desc');
             $table->date('activity_date');
+            $table->time('activity_time');
+            $table->string('activity_status');
+            $table->string('image_path');
+            $table->integer('activity_fee');
             $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->timestamps();
         });

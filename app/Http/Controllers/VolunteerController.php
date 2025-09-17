@@ -29,20 +29,18 @@ class VolunteerController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'volunteer_name' => 'required|string',
-            'volunteer_email' => 'required|email',
-            'volunteer_address' => 'required|string',
-            'volunteer_phone' => 'required|string',
-            'volunteer_gender' => 'required|string',
+            'name' => 'required|string',
+            'email' => 'required|email',
+            'address' => 'required|string',
+            'phone' => 'required|string',
+            'gender' => 'required|string',
             'reason_desc' => 'required|string',
-            'activity_id' => 'required|exists:activities,id',
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
+            'act_id' => 'required|exists:activities,id',
         ]);
 
-        // cek apakah volunteer sudah ikut activity lain
-        $exists = Volunteer::where('email', $data['email'])->exists();
-        if ($exists) {
-            return response()->json(['message' => 'Volunteer already registered'], 400);
-        }
+        // Upload image
+        $path = $request->file('image')->store('reports', 'public');
 
         $volunteer = Volunteer::create([
             'volunteer_name' => $data['name'],
@@ -50,7 +48,8 @@ class VolunteerController extends Controller
             'volunteer_address' => $data['address'],
             'volunteer_phone' => $data['phone'],
             'volunteer_gender' => $data['gender'],
-            'reason_desc' => $data['reason'],
+            'reason_desc' => $data['reason_desc'],
+            'image_slip' => $path,
             'activity_id' => $data['act_id']
         ]);
         return response()->json($volunteer, 201);

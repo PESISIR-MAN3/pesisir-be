@@ -12,7 +12,11 @@ class Activity extends Model
         'activity_name',
         'activity_desc',
         'activity_date',
-        'location_id',
+        'activity_time',
+        'activity_status',
+        'image_path',
+        'activity_fee',
+        'location_id'
     ];
 
     public function location() {

@@ -35,16 +35,27 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|unique:activities,activity_name',
-            'description' => 'nullable|string',
-            'date' => 'required|date',
+            'name'   => 'required|string|unique:activities,name',
+            'desc'   => 'nullable|string',
+            'date'   => 'required|date',
+            'time'   => 'required|date_format:H:i',
+            'status' => 'required|string',
+            'image'  => 'required|file|mimes:jpg,jpeg,png|max:10240',
+            'fee'    => 'required|integer|min:0',
             'loc_id' => 'required|exists:locations,id',
         ]);
 
+        // Upload image
+        $path = $request->file('image')->store('activities', 'public');
+
         $activity = Activity::create([
             'activity_name' => $data['name'],
-            'activity_desc' => $data['description'],
+            'activity_desc' => $data['desc'],
             'activity_date' => $data['date'],
+            'activity_time' => $data['time'],
+            'activity_status' => $data['status'],
+            'image_path' => $path,
+            'activity_fee' => $data['fee'],
             'location_id' => $data['loc_id']
         ]);
         return response()->json($activity->load(['location']), 201);
@@ -75,17 +86,27 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($id);
 
         $data = $request->validate([
-            'name' => 'sometimes|required|string',
-            'description' => 'sometimes|nullable|string',
-            'date' => 'sometimes|required|date',
-            'loc_id' => 'sometimes|required|exists:locations,id'
+            'name'   => 'sometimes|required|string|unique:activities,name,' . $activity->id,
+            'desc'   => 'sometimes|nullable|string',
+            'date'   => 'sometimes|required|date',
+            'time'   => 'sometimes|required|date_format:H:i',
+            'status' => 'sometimes|required|string',
+            'image'  => 'sometimes|nullable|file|mimes:jpg,jpeg,png|max:10240',
+            'fee'    => 'sometimes|required|integer|min:0',
+            'loc_id' => 'sometimes|required|exists:locations,id',
         ]);
 
-        $activity -> update([
-            'activity_name' => $data['name'] ?? $activity->activity_name,
-            'activity_desc' => $data['description'] ?? $activity->activity_desc,
-            'activity_date' => $data['date'] ?? $activity->activity_date,
-            'location_id' => $data['loc_id'] ?? $activity->location_id
+         $activity->update([
+            'activity_name'   => $data['name']   ?? $activity->activity_name,
+            'activity_desc'   => $data['desc']   ?? $activity->activity_desc,
+            'activity_date'   => $data['date']   ?? $activity->activity_date,
+            'activity_time'   => $data['time']   ?? $activity->activity_time,
+            'activity_status' => $data['status'] ?? $activity->activity_status,
+            'activity_fee'    => $data['fee']    ?? $activity->activity_fee,
+            'location_id'     => $data['loc_id'] ?? $activity->location_id,
+            'image_path'      => $request->hasFile('image')
+                                    ? $request->file('image')->store('activities', 'public')
+                                    : $activity->image_path,
         ]);
 
         return response()->json($activity->load(['location', 'volunteers']));

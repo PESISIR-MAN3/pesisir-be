@@ -14,11 +14,12 @@ return new class extends Migration
         Schema::create('volunteers', function (Blueprint $table) {
             $table->id();
             $table->string('volunteer_name');
-            $table->string('volunteer_email')->unique();
+            $table->string('volunteer_email');
             $table->text('volunteer_address');
             $table->string('volunteer_phone');
-            $table->string('gender');
+            $table->string('volunteer_gender');
             $table->text('reason_desc');
+            $table->string('image_slip');
             $table->foreignId('activity_id')->constrained('activities')->onDelete('cascade');
             $table->timestamps();
         });

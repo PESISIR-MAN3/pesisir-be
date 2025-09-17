@@ -14,8 +14,9 @@ class Volunteer extends Model
         'volunteer_email',
         'volunteer_address',
         'volunteer_phone',
-        'gender',
+        'volunteer_gender',
         'reason_desc',
+        'image_slip',
         'activity_id'
     ];
 
