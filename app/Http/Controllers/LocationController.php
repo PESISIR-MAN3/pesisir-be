@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use Illuminate\Http\Request;
 
 class LocationController extends Controller
@@ -11,7 +12,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(Location::with('activities', 'reports')->get());
     }
 
     /**
@@ -35,7 +36,15 @@ class LocationController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $location = Location::with(['reports', 'activities'])->findOrFail($id);
+
+        if (!$location) {
+            return response()->json([
+                'message' => 'Location not found'
+            ], 404);
+        }
+
+        return response()->json($location, 200);
     }
 
     /**
@@ -59,6 +68,18 @@ class LocationController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $location = Location::find($id);
+
+        if (!$location) {
+            return response()->json([
+                'message' => 'Location not found'
+            ], 404);
+        }
+
+        $location->delete();
+
+        return response()->json([
+            'message' => 'Location deleted successfully'
+        ], 200);
     }
 }

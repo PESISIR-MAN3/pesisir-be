@@ -30,7 +30,7 @@ class VolunteerController extends Controller
     {
         $data = $request->validate([
             'volunteer_name' => 'required|string',
-            'volunteer_email' => 'required|email|unique:volunteers,volunteer_email',
+            'volunteer_email' => 'required|email',
             'volunteer_address' => 'required|string',
             'volunteer_phone' => 'required|string',
             'volunteer_gender' => 'required|string',
@@ -44,7 +44,15 @@ class VolunteerController extends Controller
             return response()->json(['message' => 'Volunteer already registered'], 400);
         }
 
-        $volunteer = Volunteer::create($data);
+        $volunteer = Volunteer::create([
+            'volunteer_name' => $data['name'],
+            'volunteer_email' => $data['email'],
+            'volunteer_address' => $data['address'],
+            'volunteer_phone' => $data['phone'],
+            'volunteer_gender' => $data['gender'],
+            'reason_desc' => $data['reason'],
+            'activity_id' => $data['act_id']
+        ]);
         return response()->json($volunteer, 201);
     }
 
@@ -77,6 +85,18 @@ class VolunteerController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $volunteer = Volunteer::find($id);
+
+        if (!$volunteer) {
+            return response()->json([
+                'message' => 'Volunteer not found'
+            ], 404);
+        }
+
+        $volunteer->delete();
+
+        return response()->json([
+            'message' => 'Volunteer deleted successfully'
+        ], 200);
     }
 }

@@ -35,13 +35,18 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'activity_name' => 'required|string',
-            'activity_desc' => 'nullable|string',
-            'activity_date' => 'required|date',
-            'location_id' => 'required|exists:locations,id',
+            'name' => 'required|string|unique:activities,activity_name',
+            'description' => 'nullable|string',
+            'date' => 'required|date',
+            'loc_id' => 'required|exists:locations,id',
         ]);
 
-        $activity = Activity::create($data);
+        $activity = Activity::create([
+            'activity_name' => $data['name'],
+            'activity_desc' => $data['description'],
+            'activity_date' => $data['date'],
+            'location_id' => $data['loc_id']
+        ]);
         return response()->json($activity->load(['location']), 201);
     }
 
@@ -70,13 +75,18 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($id);
 
         $data = $request->validate([
-            'activity_name' => 'sometimes|required|string',
-            'activity_desc' => 'nullable|string',
-            'activity_date' => 'sometimes|required|date',
-            'location_id' => 'sometimes|required|exists:locations,id',
+            'name' => 'sometimes|required|string',
+            'description' => 'sometimes|nullable|string',
+            'date' => 'sometimes|required|date',
+            'loc_id' => 'sometimes|required|exists:locations,id'
         ]);
 
-        $activity->update($data);
+        $activity -> update([
+            'activity_name' => $data['name'] ?? $activity->activity_name,
+            'activity_desc' => $data['description'] ?? $activity->activity_desc,
+            'activity_date' => $data['date'] ?? $activity->activity_date,
+            'location_id' => $data['loc_id'] ?? $activity->location_id
+        ]);
 
         return response()->json($activity->load(['location', 'volunteers']));
     }

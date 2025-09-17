@@ -43,17 +43,24 @@ class ReportController extends Controller
         // Upload image
         $path = $request->file('image')->store('reports', 'public');
 
-        // Generate random lat/lon (dummy sementara)
-        $lat = -90 + mt_rand() / mt_getrandmax() * 180;
-        $lon = -180 + mt_rand() / mt_getrandmax() * 360;
+        // Cek apakah lokasi sudah ada
+        $location = Location::where('location_name', $data['loc_name'])
+            ->where('location_address', $data['loc_address'])
+            ->first();
 
-        // Simpan lokasi baru
-        $location = Location::create([
-            'location_name'    => $data['loc_name'],
-            'location_address' => $data['loc_address'],
-            'latitude'         => $lat,
-            'longitude'        => $lon,
-        ]);
+        if (!$location) {
+            // Generate random lat/lon (dummy sementara)
+            $lat = -90 + mt_rand() / mt_getrandmax() * 180;
+            $lon = -180 + mt_rand() / mt_getrandmax() * 360;
+
+            // Simpan lokasi baru
+            $location = Location::create([
+                'location_name'    => $data['loc_name'],
+                'location_address' => $data['loc_address'],
+                'latitude'         => $lat,
+                'longitude'        => $lon,
+            ]);
+        }
 
         // Simpan report
         $report = Report::create([
@@ -99,8 +106,18 @@ class ReportController extends Controller
      */
     public function destroy(string $id)
     {
-        $report = Report::findOrFail($id);
+        $report = Report::find($id);
+
+        if (!$report) {
+            return response()->json([
+                'message' => 'Report not found'
+            ], 404);
+        }
+
         $report->delete();
-        return response()->json(['message' => 'Report deleted']);
+
+        return response()->json([
+            'message' => 'Report deleted successfully'
+        ], 200);
     }
 }

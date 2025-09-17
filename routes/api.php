@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Http\Request;
@@ -11,11 +12,15 @@ Route::get('/user', function (Request $request) {
 })->middleware('auth:sanctum');
 
 Route::get('/activities', [ActivityController::class, 'index']);
-Route::get('/activities/{id}/volunteers', [ActivityController::class, 'volunteers']);
+Route::get('/activities/{id}/volunteers', [ActivityController::class, 'volunteers']); // Cek semua volunteer untuk satu activity
+Route::get('/activities/{id}', [ActivityController::class, 'show']);
 Route::post('/activities', [ActivityController::class, 'store']);
 Route::put('/activities/{id}', [ActivityController::class, 'update']);
-Route::get('/activities/{id}', [ActivityController::class, 'show']);
 Route::delete('/activities/{id}', [ActivityController::class, 'destroy']);
+
+Route::get('/locations', [LocationController::class, 'index']);
+Route::get('/locations/{id}', [LocationController::class, 'show']);
+Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
 
 Route::get('/reports', [ReportController::class, 'index']);
 Route::get('/reports/{id}', [ReportController::class, 'show']);
@@ -24,3 +29,4 @@ Route::delete('/reports/{id}',[ReportController::class, 'destroy']);
 
 Route::get('/volunteers', [VolunteerController::class, 'index']);
 Route::post('/volunteers', [VolunteerController::class, 'store']);
+Route::delete('/volunteers', [VolunteerController::class, 'destroy']);
