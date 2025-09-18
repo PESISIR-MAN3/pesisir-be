@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ReportController;
@@ -8,9 +9,12 @@ use App\Http\Controllers\VolunteerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', fn (Request $request) => $request->user());
+    Route::post('/logout', [AuthController::class, 'logout']);
+});
 
 Route::get('/activities', [ActivityController::class, 'index']);
 Route::get('/activities/{id}/volunteers', [ActivityController::class, 'volunteers']); // Cek semua volunteer untuk satu activity
