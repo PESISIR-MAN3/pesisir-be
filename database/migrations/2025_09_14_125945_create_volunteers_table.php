@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('volunteer_phone');
             $table->string('volunteer_gender');
             $table->text('reason_desc');
+            $table->string('payment_method');
             $table->string('image_slip');
             $table->foreignId('activity_id')->constrained('activities')->onDelete('cascade');
             $table->timestamps();

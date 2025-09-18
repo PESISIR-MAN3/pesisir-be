@@ -28,7 +28,22 @@ class LocationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'name' => 'required|string|unique:locations,location_name',
+            'address' => 'required|string|unique:locations,location_address',
+            'latitude' => 'required|numeric|between:-90,90',
+            'longitude' => 'required|numeric|between:-180,180',
+        ]);
+
+        // Simpan data ke Locations
+        $location = Location::create([
+            'location_name' => $data['name'],
+            'location_address' => $data['address'],
+            'latitude' => $data['latitude'],
+            'longitude' => $data['longitude'],
+        ]);
+
+        return response()->json($location, 201);
     }
 
     /**
@@ -60,7 +75,23 @@ class LocationController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $location = Location::findOrFail($id);
+
+        $data = $request->validate([
+            'name'      => 'sometimes|required|string|unique:locations,location_name,' . $id,
+            'address'   => 'sometimes|required|string|unique:locations,location_address,' . $id,
+            'latitude'  => 'sometimes|required|numeric|between:-90,90',
+            'longitude' => 'sometimes|required|numeric|between:-180,180',
+        ]);
+
+        $location->update([
+            'location_name'    => $data['name']      ?? $location->location_name,
+            'location_address' => $data['address']   ?? $location->location_address,
+            'latitude'         => $data['latitude']  ?? $location->latitude,
+            'longitude'        => $data['longitude'] ?? $location->longitude,
+        ]);
+
+        return response()->json($location->refresh(), 200);
     }
 
     /**

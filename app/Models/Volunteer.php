@@ -16,6 +16,7 @@ class Volunteer extends Model
         'volunteer_phone',
         'volunteer_gender',
         'reason_desc',
+        'payment_method',
         'image_slip',
         'activity_id'
     ];

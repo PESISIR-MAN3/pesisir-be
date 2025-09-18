@@ -35,11 +35,11 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'   => 'required|string|unique:activities,name',
+            'name'   => 'required|string|unique:activities,activity_name',
             'desc'   => 'nullable|string',
             'date'   => 'required|date',
             'time'   => 'required|date_format:H:i',
-            'status' => 'required|string',
+            'status' => 'required|string|in:ongoing,done,upcoming',
             'image'  => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'fee'    => 'required|integer|min:0',
             'loc_id' => 'required|exists:locations,id',
@@ -90,7 +90,7 @@ class ActivityController extends Controller
             'desc'   => 'sometimes|nullable|string',
             'date'   => 'sometimes|required|date',
             'time'   => 'sometimes|required|date_format:H:i',
-            'status' => 'sometimes|required|string',
+            'status' => 'sometimes|required|string|in:ongoing,done,upcoming',
             'image'  => 'sometimes|nullable|file|mimes:jpg,jpeg,png|max:10240',
             'fee'    => 'sometimes|required|integer|min:0',
             'loc_id' => 'sometimes|required|exists:locations,id',
@@ -117,8 +117,23 @@ class ActivityController extends Controller
      */
     public function destroy(string $id)
     {
-        $activity = Activity::findOrFail($id);
+        $activity = Activity::find($id);
+
+        if (!$activity) {
+            return response()->json([
+                'message' => 'Activity not found'
+            ], 404);
+        }
+
+        // Hapus file image_path kalau ada
+        if ($activity->image_path && \Storage::disk('public')->exists($activity->image_path)) {
+            \Storage::disk('public')->delete($activity->image_path);
+        }
+
         $activity->delete();
-        return response()->json(['message' => 'Activity deleted']);
+
+        return response()->json([
+            'message' => 'Activity deleted successfully'
+        ], 200);
     }
 }

@@ -12,7 +12,7 @@ class VolunteerController extends Controller
      */
     public function index()
     {
-        return response()->json(Volunteer::with('activity')->get());
+        return response()->json(Volunteer::all());
     }
 
     /**
@@ -35,12 +35,13 @@ class VolunteerController extends Controller
             'phone' => 'required|string',
             'gender' => 'required|string',
             'reason_desc' => 'required|string',
+            'payment_method' => 'required|string',
             'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'act_id' => 'required|exists:activities,id',
         ]);
 
         // Upload image
-        $path = $request->file('image')->store('reports', 'public');
+        $path = $request->file('image')->store('volunteers', 'public');
 
         $volunteer = Volunteer::create([
             'volunteer_name' => $data['name'],
@@ -49,6 +50,7 @@ class VolunteerController extends Controller
             'volunteer_phone' => $data['phone'],
             'volunteer_gender' => $data['gender'],
             'reason_desc' => $data['reason_desc'],
+            'payment_method' => $data['payment_method'],
             'image_slip' => $path,
             'activity_id' => $data['act_id']
         ]);
@@ -60,7 +62,8 @@ class VolunteerController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $volunteer = Volunteer::with(['activity'])->findOrFail($id);
+        return response()->json($volunteer);
     }
 
     /**
@@ -90,6 +93,11 @@ class VolunteerController extends Controller
             return response()->json([
                 'message' => 'Volunteer not found'
             ], 404);
+        }
+
+        // Hapus file image_slip kalau ada
+        if ($volunteer->image_slip && \Storage::disk('public')->exists($volunteer->image_slip)) {
+            \Storage::disk('public')->delete($volunteer->image_slip);
         }
 
         $volunteer->delete();

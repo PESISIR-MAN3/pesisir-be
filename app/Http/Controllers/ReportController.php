@@ -34,7 +34,7 @@ class ReportController extends Controller
             'email' => 'required|email',
             'address' => 'required|string',
             'phone' => 'required|string',
-            'description' => 'required|string',
+            'desc' => 'required|string',
             'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'loc_name' => 'required|string',
             'loc_address' => 'required|string',
@@ -68,7 +68,7 @@ class ReportController extends Controller
             'reporter_email'   => $data['email'],
             'reporter_address' => $data['address'],
             'reporter_phone'   => $data['phone'],
-            'report_desc'      => $data['description'],
+            'report_desc'      => $data['desc'],
             'image_path'       => $path,
             'location_id'      => $location->id,
         ]);
@@ -112,6 +112,11 @@ class ReportController extends Controller
             return response()->json([
                 'message' => 'Report not found'
             ], 404);
+        }
+
+        // Hapus file image_path kalau ada
+        if ($report->image_path && \Storage::disk('public')->exists($report->image_path)) {
+            \Storage::disk('public')->delete($report->image_path);
         }
 
         $report->delete();

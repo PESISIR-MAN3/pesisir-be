@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('donations', function (Blueprint $table) {
             $table->id();
-            $table->string('donation_bank');
+            $table->string('donation_method');
             $table->integer('donation_amount');
             $table->string('image_slip');
             $table->timestamps();
