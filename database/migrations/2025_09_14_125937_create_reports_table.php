@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('reporter_address');
             $table->string('reporter_phone');
             $table->text('report_desc');
+            $table->date('report_date');
             $table->string('image_path');
             $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->timestamps();

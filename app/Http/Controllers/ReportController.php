@@ -35,6 +35,7 @@ class ReportController extends Controller
             'address' => 'required|string',
             'phone' => 'required|string',
             'desc' => 'required|string',
+            'report_date' => 'required|date',
             'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'loc_name' => 'required|string',
             'loc_address' => 'required|string',
@@ -69,6 +70,7 @@ class ReportController extends Controller
             'reporter_address' => $data['address'],
             'reporter_phone'   => $data['phone'],
             'report_desc'      => $data['desc'],
+            'report_date'      => $data['date'],
             'image_path'       => $path,
             'location_id'      => $location->id,
         ]);

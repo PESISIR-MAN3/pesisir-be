@@ -14,6 +14,7 @@ class Report extends Model
         'reporter_address',
         'reporter_phone',
         'report_desc',
+        'report_date',
         'image_path',
         'location_id',
     ];
