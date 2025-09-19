@@ -39,6 +39,8 @@ class ReportController extends Controller
             'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'loc_name' => 'required|string',
             'loc_address' => 'required|string',
+            'lat' => 'required|numeric|between:-90,90',
+            'long' => 'required|numeric|between:-180,180',
         ]);
 
         // Upload image
@@ -50,16 +52,12 @@ class ReportController extends Controller
             ->first();
 
         if (!$location) {
-            // Generate random lat/lon (dummy sementara)
-            $lat = -90 + mt_rand() / mt_getrandmax() * 180;
-            $lon = -180 + mt_rand() / mt_getrandmax() * 360;
-
             // Simpan lokasi baru
             $location = Location::create([
                 'location_name'    => $data['loc_name'],
                 'location_address' => $data['loc_address'],
-                'latitude'         => $lat,
-                'longitude'        => $lon,
+                'latitude'         => $data['lat'],
+                'longitude'        => $data['lot']
             ]);
         }
 
