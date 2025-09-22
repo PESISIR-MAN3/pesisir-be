@@ -35,7 +35,7 @@ class DonationMethodController extends Controller
         ]);
 
         $donation_method = DonationMethod::create([
-            'method_name' => $data['name'],
+            'method_name' => $data['method'],
             'account_number' => $data['number'],
             'owner_name' => $data['owner']
         ]);
