@@ -16,7 +16,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', fn (Request $request) => $request->user());
     Route::post('/logout', [AuthController::class, 'logout']);
 
-    Route::get('/activities', [ActivityController::class, 'index']);
     Route::get('/activities/{id}/volunteers', [ActivityController::class, 'volunteers']);
     Route::get('/activities/{id}', [ActivityController::class, 'show']);
     Route::post('/activities', [ActivityController::class, 'store']);
@@ -47,6 +46,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/volunteers/{id}', [VolunteerController::class, 'show']);
     Route::delete('/volunteers', [VolunteerController::class, 'destroy']);
 });
+
+Route::get('/activities', [ActivityController::class, 'index']);
 
 Route::post('/donations', [DonationController::class, 'store']);
 
