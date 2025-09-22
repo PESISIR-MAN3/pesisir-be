@@ -4,17 +4,17 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Report extends Model
+class Complaint extends Model
 {
-    protected $table = 'reports';
+    protected $table = 'complaints';
 
     protected $fillable = [
-        'reporter_name',
-        'reporter_email',
-        'reporter_address',
-        'reporter_phone',
-        'report_desc',
-        'report_date',
+        'complainant_name',
+        'complainant_email',
+        'complainant_address',
+        'complainant_phone',
+        'complaint_desc',
+        'actual_date',
         'image_path',
         'location_id',
     ];

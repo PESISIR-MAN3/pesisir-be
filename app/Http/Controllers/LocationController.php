@@ -12,7 +12,7 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return response()->json(Location::with('activities', 'reports')->get());
+        return response()->json(Location::with('activities', 'complaints')->get());
     }
 
     /**
@@ -51,7 +51,7 @@ class LocationController extends Controller
      */
     public function show(string $id)
     {
-        $location = Location::with(['reports', 'activities'])->findOrFail($id);
+        $location = Location::with(['complaints', 'activities'])->findOrFail($id);
 
         if (!$location) {
             return response()->json([

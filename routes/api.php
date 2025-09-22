@@ -4,7 +4,7 @@ use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonationController;
 use App\Http\Controllers\LocationController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\VolunteerController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,9 +32,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/locations/{id}', [LocationController::class, 'update']);
     Route::delete('/locations/{id}', [LocationController::class, 'destroy']);
 
-    Route::get('/reports', [ReportController::class, 'index']);
-    Route::get('/reports/{id}', [ReportController::class, 'show']);
-    Route::delete('/reports/{id}',[ReportController::class, 'destroy']);
+    Route::get('/complaints', [ComplaintController::class, 'index']);
+    Route::get('/complaints/{id}', [ComplaintController::class, 'show']);
+    Route::delete('/complaints/{id}',[ComplaintController::class, 'destroy']);
 
     Route::get('/volunteers', [VolunteerController::class, 'index']);
     Route::get('/volunteers/{id}', [VolunteerController::class, 'show']);
@@ -43,6 +43,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::post('/donations', [DonationController::class, 'store']);
 
-Route::post('/reports', [ReportController::class, 'store']);
+Route::post('/complaints', [ComplaintController::class, 'store']);
 
 Route::post('/volunteers', [VolunteerController::class, 'store']);

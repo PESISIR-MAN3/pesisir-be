@@ -3,17 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Location;
-use App\Models\Report;
+use App\Models\Complaint;
 use Illuminate\Http\Request;
 
-class ReportController extends Controller
+class complaintController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return response()->json(Report::with('location')->get());
+        return response()->json(Complaint::with('location')->get());
     }
 
     /**
@@ -35,7 +35,7 @@ class ReportController extends Controller
             'address' => 'required|string',
             'phone' => 'required|string',
             'desc' => 'required|string',
-            'report_date' => 'required|date',
+            'complaint_date' => 'required|date',
             'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'loc_name' => 'required|string',
             'loc_address' => 'required|string',
@@ -44,7 +44,7 @@ class ReportController extends Controller
         ]);
 
         // Upload image
-        $path = $request->file('image')->store('reports', 'public');
+        $path = $request->file('image')->store('complaints', 'public');
 
         // Cek apakah lokasi sudah ada
         $location = Location::where('location_name', $data['loc_name'])
@@ -61,19 +61,19 @@ class ReportController extends Controller
             ]);
         }
 
-        // Simpan report
-        $report = Report::create([
-            'reporter_name'    => $data['name'],
-            'reporter_email'   => $data['email'],
-            'reporter_address' => $data['address'],
-            'reporter_phone'   => $data['phone'],
-            'report_desc'      => $data['desc'],
-            'report_date'      => $data['date'],
+        // Simpan complaint
+        $complaint = complaint::create([
+            'complainant_name'    => $data['name'],
+            'complainant_email'   => $data['email'],
+            'complainant_address' => $data['address'],
+            'complainant_phone'   => $data['phone'],
+            'complaint_desc'      => $data['desc'],
+            'actual_date'      => $data['date'],
             'image_path'       => $path,
             'location_id'      => $location->id,
         ]);
 
-        return response()->json($report->load('location'), 201);
+        return response()->json($complaint->load('location'), 201);
     }
 
     /**
@@ -81,8 +81,8 @@ class ReportController extends Controller
      */
     public function show(string $id)
     {
-        $report = Report::with(['location'])->findOrFail($id);
-        return response()->json($report);
+        $complaint = complaint::with(['location'])->findOrFail($id);
+        return response()->json($complaint);
     }
 
     /**
@@ -106,23 +106,23 @@ class ReportController extends Controller
      */
     public function destroy(string $id)
     {
-        $report = Report::find($id);
+        $complaint = complaint::find($id);
 
-        if (!$report) {
+        if (!$complaint) {
             return response()->json([
-                'message' => 'Report not found'
+                'message' => 'Complaint not found'
             ], 404);
         }
 
         // Hapus file image_path kalau ada
-        if ($report->image_path && \Storage::disk('public')->exists($report->image_path)) {
-            \Storage::disk('public')->delete($report->image_path);
+        if ($complaint->image_path && \Storage::disk('public')->exists($complaint->image_path)) {
+            \Storage::disk('public')->delete($complaint->image_path);
         }
 
-        $report->delete();
+        $complaint->delete();
 
         return response()->json([
-            'message' => 'Report deleted successfully'
+            'message' => 'Complaint deleted successfully'
         ], 200);
     }
 }
