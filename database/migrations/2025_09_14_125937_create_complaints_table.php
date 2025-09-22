@@ -11,14 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reports', function (Blueprint $table) {
+        Schema::create('complaints', function (Blueprint $table) {
             $table->id();
-            $table->string('reporter_name');
-            $table->string('reporter_email');
-            $table->string('reporter_address');
-            $table->string('reporter_phone');
-            $table->text('report_desc');
-            $table->date('report_date');
+            $table->string('complainant_name');
+            $table->string('complainant_email');
+            $table->string('complainant_address');
+            $table->string('complainant_phone');
+            $table->date('actual_date');
+            $table->text('complaint_desc');
             $table->string('image_path');
             $table->foreignId('location_id')->constrained('locations')->onDelete('cascade');
             $table->timestamps();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('reports');
+        Schema::dropIfExists('complaints');
     }
 };
