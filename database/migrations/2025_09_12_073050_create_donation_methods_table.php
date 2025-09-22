@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('donations', function (Blueprint $table) {
+        Schema::create('donation_methods', function (Blueprint $table) {
             $table->id();
-            $table->integer('donation_amount');
-            $table->string('image_slip');
-            $table->foreignId('donation_method_id')->constrained('donation_methods')->onDelete('cascade');
+            $table->string('method_name');
+            $table->string('account_number');
+            $table->string('owner_name');
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('donations');
+        Schema::dropIfExists('donation_methods');
     }
 };

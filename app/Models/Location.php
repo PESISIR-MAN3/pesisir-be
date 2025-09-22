@@ -19,7 +19,7 @@ class Location extends Model
     public function activities() {
         return $this->hasOne(Activity::class);
     }
-    public function reports() {
+    public function complaints() {
         return $this->hasMany(Complaint::class);
     }
 }

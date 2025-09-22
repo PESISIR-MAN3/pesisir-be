@@ -6,7 +6,7 @@ use App\Models\Location;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 
-class complaintController extends Controller
+class ComplaintController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -35,7 +35,7 @@ class complaintController extends Controller
             'address' => 'required|string',
             'phone' => 'required|string',
             'desc' => 'required|string',
-            'complaint_date' => 'required|date',
+            'date' => 'required|date',
             'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'loc_name' => 'required|string',
             'loc_address' => 'required|string',
@@ -68,9 +68,9 @@ class complaintController extends Controller
             'complainant_address' => $data['address'],
             'complainant_phone'   => $data['phone'],
             'complaint_desc'      => $data['desc'],
-            'actual_date'      => $data['date'],
-            'image_path'       => $path,
-            'location_id'      => $location->id,
+            'actual_date'         => $data['date'],
+            'image_path'          => $path,
+            'location_id'         => $location->id,
         ]);
 
         return response()->json($complaint->load('location'), 201);

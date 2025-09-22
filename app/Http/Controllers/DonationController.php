@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donation;
+use App\Models\DonationMethod;
 use Illuminate\Http\Request;
 
 class DonationController extends Controller
@@ -29,18 +30,18 @@ class DonationController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'method' => 'required|string',
-            'amount' => 'required|integer|min:1',
-            'image' => 'required|file|mimes:jpg,jpeg,png|max:10240'
+            'amount' => 'required|integer|min:10000',
+            'image' => 'required|file|mimes:jpg,jpeg,png|max:10240',
+            'method_id' => 'required|exists:donation_methods,id'
         ]);
 
         // Upload file
         $path = $request->file('image')->store('donations', 'public');
 
         $donation = Donation::create([
-            'donation_method' => $data['method'],
             'donation_amount' => $data['amount'],
             'image_slip'      => $path,
+            'donation_method_id' => $data['method_id']
         ]);
 
         return response()->json($donation, 201);

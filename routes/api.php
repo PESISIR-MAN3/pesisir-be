@@ -3,6 +3,7 @@
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DonationController;
+use App\Http\Controllers\DonationMethodController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\ComplaintController;
 use App\Http\Controllers\VolunteerController;
@@ -25,6 +26,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/donations', [DonationController::class, 'index']);
     Route::get('/donations/{id}', [DonationController::class, 'show']);
     Route::delete('/donations/{id}', [DonationController::class, 'destroy']);
+    
+    Route::get('/donation-methods', [DonationMethodController::class, 'index']);
+    Route::get('/donation-methods/{id}', [DonationMethodController::class, 'show']);
+    Route::post('/donation-methods', [DonationMethodController::class, 'store']);
+    Route::put('/donation-methods/{id}', [DonationMethodController::class, 'update']);
+    Route::delete('/donation-methods/{id}', [DonationMethodController::class, 'destroy']);
 
     Route::get('/locations', [LocationController::class, 'index']);
     Route::get('/locations/{id}', [LocationController::class, 'show']);
