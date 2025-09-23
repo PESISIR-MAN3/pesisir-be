@@ -6,20 +6,34 @@ use App\Models\Activity;
 use App\Models\Location;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Info(
+ *     title="API Pesisir Project",
+ *     version="1.0.0",
+ *     description="API Documentation for Pesisir"
+ * )
+ *
+ * @OA\Tag(
+ *     name="Activities",
+ *     description="API Endpoints for managing activities"
+ * )
+ */
 class ActivityController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * @OA\Get(
+     *     path="/api/activities",
+     *     tags={"Activities"},
+     *     summary="Get list of activities",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of activities with locations and volunteers"
+     *     )
+     * )
      */
     public function index()
     {
         return response()->json(Activity::with('locations', 'volunteers')->get());
-    }
-
-    public function volunteer($id)
-    {
-        $activity = Activity::with('volunteers')->findOrFail($id);
-        return response()->json($activity->volunteers);
     }
 
     /**
@@ -30,8 +44,30 @@ class ActivityController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
+/**
+     * @OA\Post(
+     *     path="/api/activities",
+     *     tags={"Activities"},
+     *     summary="Create a new activity",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","date","time","status","fee","loc_name","loc_address","lat","long"},
+     *             @OA\Property(property="name", type="string", example="Beach Cleanup"),
+     *             @OA\Property(property="desc", type="string", example="Cleaning the beach area"),
+     *             @OA\Property(property="date", type="string", format="date", example="2025-10-01"),
+     *             @OA\Property(property="time", type="string", format="time", example="08:00"),
+     *             @OA\Property(property="status", type="string", enum={"ongoing","done","upcoming"}, example="upcoming"),
+     *             @OA\Property(property="fee", type="integer", example=20000),
+     *             @OA\Property(property="loc_name", type="string", example="Pantai Parangtritis"),
+     *             @OA\Property(property="loc_address", type="string", example="Jl. Pantai Selatan, Bantul"),
+     *             @OA\Property(property="lat", type="number", format="float", example=-7.9778),
+     *             @OA\Property(property="long", type="number", format="float", example=110.3695)
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Activity created"),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
      */
     public function store(Request $request)
     {
@@ -81,7 +117,20 @@ class ActivityController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/activities/{id}",
+     *     tags={"Activities"},
+     *     summary="Get a single activity",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Activity ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Activity details"),
+     *     @OA\Response(response=404, description="Activity not found")
+     * )
      */
     public function show(string $id)
     {
@@ -97,8 +146,36 @@ class ActivityController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
+/**
+     * @OA\Put(
+     *     path="/api/activities/{id}",
+     *     tags={"Activities"},
+     *     summary="Update an activity",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Activity ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Updated Activity"),
+     *             @OA\Property(property="desc", type="string", example="Updated description"),
+     *             @OA\Property(property="date", type="string", format="date", example="2025-10-10"),
+     *             @OA\Property(property="time", type="string", format="time", example="10:00"),
+     *             @OA\Property(property="status", type="string", enum={"ongoing","done","upcoming"}, example="ongoing"),
+     *             @OA\Property(property="fee", type="integer", example=50000),
+     *             @OA\Property(property="loc_name", type="string", example="New Location"),
+     *             @OA\Property(property="loc_address", type="string", example="Jl. Malioboro, Yogyakarta"),
+     *             @OA\Property(property="lat", type="number", format="float", example=-7.8014),
+     *             @OA\Property(property="long", type="number", format="float", example=110.3647)
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Activity updated"),
+     *     @OA\Response(response=404, description="Activity not found"),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
      */
     public function update(Request $request, string $id)
     {
@@ -148,8 +225,21 @@ class ActivityController extends Controller
         return response()->json($activity->load(['locations', 'volunteers']));
     }
 
-    /**
-     * Remove the specified resource from storage.
+ /**
+     * @OA\Delete(
+     *     path="/api/activities/{id}",
+     *     tags={"Activities"},
+     *     summary="Delete an activity",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Activity ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Activity deleted"),
+     *     @OA\Response(response=404, description="Activity not found")
+     * )
      */
     public function destroy(string $id)
     {

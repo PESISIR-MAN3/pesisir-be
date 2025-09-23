@@ -6,10 +6,38 @@ use App\Models\Donation;
 use App\Models\DonationMethod;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Donations",
+ *     description="API Endpoints for managing donations"
+ * )
+ *
+ * @OA\Schema(
+ *     schema="Donation",
+ *     type="object",
+ *     title="Donation",
+ *     description="Donation model",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="donation_amount", type="integer", example=50000),
+ *     @OA\Property(property="image_slip", type="string", example="donations/slip1.png"),
+ *     @OA\Property(property="donation_method_id", type="integer", example=2),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-09-23T10:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-09-23T10:00:00Z")
+ * )
+ *
+ */
 class DonationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/donations",
+     *     summary="Get list of donations",
+     *     tags={"Donations"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *     )
+     * )
      */
     public function index()
     {
@@ -25,7 +53,28 @@ class DonationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/donations",
+     *     summary="Create a new donation",
+     *     tags={"Donations"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 required={"amount", "image", "method_id"},
+     *                 @OA\Property(property="amount", type="integer", example=50000),
+     *                 @OA\Property(property="image", type="string", format="binary"),
+     *                 @OA\Property(property="method_id", type="integer", example=1)
+     *             )
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Donation created successfully",
+     *         @OA\JsonContent(ref="#/components/schemas/Donation")
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -48,7 +97,24 @@ class DonationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/donations/{id}",
+     *     summary="Get donation by ID",
+     *     tags={"Donations"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Donation ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Donation detail",
+     *         @OA\JsonContent(ref="#/components/schemas/Donation")
+     *     ),
+     *     @OA\Response(response=404, description="Donation not found")
+     * )
      */
     public function show(string $id)
     {
@@ -72,7 +138,20 @@ class DonationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/donations/{id}",
+     *     summary="Delete donation",
+     *     tags={"Donations"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Donation ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Donation deleted successfully"),
+     *     @OA\Response(response=404, description="Donation not found")
+     * )
      */
     public function destroy(string $id)
     {

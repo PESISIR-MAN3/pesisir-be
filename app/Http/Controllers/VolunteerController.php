@@ -5,10 +5,24 @@ namespace App\Http\Controllers;
 use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Volunteers",
+ *     description="API Endpoints for managing volunteers"
+ * )
+ */
 class VolunteerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * @OA\Get(
+     *     path="/api/volunteers",
+     *     tags={"Volunteers"},
+     *     summary="Get list of volunteers",
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation"
+     *     )
+     * )
      */
     public function index()
     {
@@ -24,7 +38,28 @@ class VolunteerController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/volunteers",
+     *     tags={"Volunteers"},
+     *     summary="Create new volunteer",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","email","address","phone","gender","reason_desc","payment_method","act_id"},
+     *             @OA\Property(property="name", type="string"),
+     *             @OA\Property(property="email", type="string", format="email"),
+     *             @OA\Property(property="address", type="string"),
+     *             @OA\Property(property="phone", type="string"),
+     *             @OA\Property(property="gender", type="string"),
+     *             @OA\Property(property="reason_desc", type="string"),
+     *             @OA\Property(property="payment_method", type="string"),
+     *             @OA\Property(property="image", type="string", format="binary"),
+     *             @OA\Property(property="act_id", type="integer"),
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Volunteer created successfully"),
+     *     @OA\Response(response=400, description="Invalid input")
+     * )
      */
     public function store(Request $request)
     {
@@ -58,7 +93,19 @@ class VolunteerController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/volunteers/{id}",
+     *     tags={"Volunteers"},
+     *     summary="Get volunteer by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Successful operation"),
+     *     @OA\Response(response=404, description="Volunteer not found")
+     * )
      */
     public function show(string $id)
     {
@@ -83,7 +130,19 @@ class VolunteerController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/volunteers/{id}",
+     *     tags={"Volunteers"},
+     *     summary="Delete volunteer by ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Volunteer deleted successfully"),
+     *     @OA\Response(response=404, description="Volunteer not found")
+     * )
      */
     public function destroy(string $id)
     {

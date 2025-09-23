@@ -6,10 +6,24 @@ use App\Models\Location;
 use App\Models\Complaint;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Complaints",
+ *     description="API Endpoints for managing complaints"
+ * )
+ */
 class ComplaintController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * @OA\Get(
+     *     path="/api/complaints",
+     *     tags={"Complaints"},
+     *     summary="Get list of complaints",
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of complaints with location"
+     *     )
+     * )
      */
     public function index()
     {
@@ -25,7 +39,31 @@ class ComplaintController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/complaints",
+     *     tags={"Complaints"},
+     *     summary="Create a new complaint",
+     *     description="Store a newly created complaint with location and image",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","email","address","phone","desc","date","image","loc_name","loc_address","lat","long"},
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="address", type="string", example="Jl. Sudirman No. 123"),
+     *             @OA\Property(property="phone", type="string", example="08123456789"),
+     *             @OA\Property(property="desc", type="string", example="Illegal trash dumping"),
+     *             @OA\Property(property="date", type="string", format="date", example="2025-09-23"),
+     *             @OA\Property(property="image", type="string", format="binary"),
+     *             @OA\Property(property="loc_name", type="string", example="Kelurahan A"),
+     *             @OA\Property(property="loc_address", type="string", example="Jl. Kenanga, RT 01 RW 02"),
+     *             @OA\Property(property="lat", type="number", format="float", example=-7.8014),
+     *             @OA\Property(property="long", type="number", format="float", example=110.3647)
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Complaint created"),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
      */
     public function store(Request $request)
     {
@@ -76,8 +114,21 @@ class ComplaintController extends Controller
         return response()->json($complaint->load('location'), 201);
     }
 
-    /**
-     * Display the specified resource.
+     /**
+     * @OA\Get(
+     *     path="/api/complaints/{id}",
+     *     tags={"Complaints"},
+     *     summary="Get a single complaint",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Complaint ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Complaint details"),
+     *     @OA\Response(response=404, description="Complaint not found")
+     * )
      */
     public function show(string $id)
     {
@@ -102,7 +153,20 @@ class ComplaintController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/complaints/{id}",
+     *     tags={"Complaints"},
+     *     summary="Delete a complaint",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Complaint ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Complaint deleted"),
+     *     @OA\Response(response=404, description="Complaint not found")
+     * )
      */
     public function destroy(string $id)
     {

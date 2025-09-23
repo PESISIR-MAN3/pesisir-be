@@ -5,10 +5,37 @@ namespace App\Http\Controllers;
 use App\Models\Location;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Locations",
+ *     description="API Endpoints for managing locations"
+ * )
+ * @OA\Schema(
+ *     schema="Location",
+ *     type="object",
+ *     title="Location",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="location_name", type="string", example="Panti Asuhan Sejahtera"),
+ *     @OA\Property(property="location_address", type="string", example="Jl. Merpati No. 10, Jakarta"),
+ *     @OA\Property(property="latitude", type="number", format="float", example="-6.200000"),
+ *     @OA\Property(property="longitude", type="number", format="float", example="106.816666"),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class LocationController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/locations",
+     *     summary="Get all locations",
+     *     tags={"Locations"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of locations",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/Location"))
+     *     )
+     * )
      */
     public function index()
     {
@@ -24,7 +51,23 @@ class LocationController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/locations",
+     *     summary="Create a new location",
+     *     tags={"Locations"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","address","latitude","longitude"},
+     *             @OA\Property(property="name", type="string", example="Panti Asuhan Sejahtera"),
+     *             @OA\Property(property="address", type="string", example="Jl. Merpati No. 10, Jakarta"),
+     *             @OA\Property(property="latitude", type="number", format="float", example="-6.200000"),
+     *             @OA\Property(property="longitude", type="number", format="float", example="106.816666")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="Location created", @OA\JsonContent(ref="#/components/schemas/Location")),
+     *     @OA\Response(response=422, description="Validation error")
+     * )
      */
     public function store(Request $request)
     {
@@ -47,7 +90,14 @@ class LocationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/locations/{id}",
+     *     summary="Get location by ID",
+     *     tags={"Locations"},
+     *     @OA\Parameter(name="id", in="path", required=true, description="Location ID", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Location detail", @OA\JsonContent(ref="#/components/schemas/Location")),
+     *     @OA\Response(response=404, description="Location not found")
+     * )
      */
     public function show(string $id)
     {
@@ -64,7 +114,22 @@ class LocationController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/locations/{id}",
+     *     summary="Update location",
+     *     tags={"Locations"},
+     *     @OA\Parameter(name="id", in="path", required=true, description="Location ID", @OA\Schema(type="integer")),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="name", type="string", example="Panti Asuhan Damai"),
+     *             @OA\Property(property="address", type="string", example="Jl. Anggrek No. 5, Bandung"),
+     *             @OA\Property(property="latitude", type="number", format="float", example="-6.914744"),
+     *             @OA\Property(property="longitude", type="number", format="float", example="107.609810")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Location updated", @OA\JsonContent(ref="#/components/schemas/Location")),
+     *     @OA\Response(response=404, description="Location not found")
+     * )
      */
     public function update(Request $request, string $id)
     {
@@ -88,7 +153,14 @@ class LocationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/locations/{id}",
+     *     summary="Delete location",
+     *     tags={"Locations"},
+     *     @OA\Parameter(name="id", in="path", required=true, description="Location ID", @OA\Schema(type="integer")),
+     *     @OA\Response(response=200, description="Location deleted"),
+     *     @OA\Response(response=404, description="Location not found")
+     * )
      */
     public function destroy(string $id)
     {

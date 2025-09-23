@@ -1,0 +1,1313 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "API Pesisir Project",
+        "description": "API Documentation for Pesisir",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/activities": {
+            "get": {
+                "tags": [
+                    "Activities"
+                ],
+                "summary": "Get list of activities",
+                "operationId": "53e7a0b67f6097ed90245000764b2e5e",
+                "responses": {
+                    "200": {
+                        "description": "List of activities with locations and volunteers"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Activities"
+                ],
+                "summary": "Create a new activity",
+                "operationId": "8aa12114961e22767ecdad7c24be367e",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "date",
+                                    "time",
+                                    "status",
+                                    "fee",
+                                    "loc_name",
+                                    "loc_address",
+                                    "lat",
+                                    "long"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Beach Cleanup"
+                                    },
+                                    "desc": {
+                                        "type": "string",
+                                        "example": "Cleaning the beach area"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-10-01"
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "08:00"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ongoing",
+                                            "done",
+                                            "upcoming"
+                                        ],
+                                        "example": "upcoming"
+                                    },
+                                    "fee": {
+                                        "type": "integer",
+                                        "example": 20000
+                                    },
+                                    "loc_name": {
+                                        "type": "string",
+                                        "example": "Pantai Parangtritis"
+                                    },
+                                    "loc_address": {
+                                        "type": "string",
+                                        "example": "Jl. Pantai Selatan, Bantul"
+                                    },
+                                    "lat": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -7.9778
+                                    },
+                                    "long": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 110.3695
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Activity created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/activities/{id}": {
+            "get": {
+                "tags": [
+                    "Activities"
+                ],
+                "summary": "Get a single activity",
+                "operationId": "6d75cdd5535b9b12358448ec198faba4",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Activity ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Activity details"
+                    },
+                    "404": {
+                        "description": "Activity not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Activities"
+                ],
+                "summary": "Update an activity",
+                "operationId": "064379988a5fe2c974ae5ab18f0cddfd",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Activity ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Activity"
+                                    },
+                                    "desc": {
+                                        "type": "string",
+                                        "example": "Updated description"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-10-10"
+                                    },
+                                    "time": {
+                                        "type": "string",
+                                        "format": "time",
+                                        "example": "10:00"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "ongoing",
+                                            "done",
+                                            "upcoming"
+                                        ],
+                                        "example": "ongoing"
+                                    },
+                                    "fee": {
+                                        "type": "integer",
+                                        "example": 50000
+                                    },
+                                    "loc_name": {
+                                        "type": "string",
+                                        "example": "New Location"
+                                    },
+                                    "loc_address": {
+                                        "type": "string",
+                                        "example": "Jl. Malioboro, Yogyakarta"
+                                    },
+                                    "lat": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -7.8014
+                                    },
+                                    "long": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 110.3647
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Activity updated"
+                    },
+                    "404": {
+                        "description": "Activity not found"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Activities"
+                ],
+                "summary": "Delete an activity",
+                "operationId": "d822403ad9a85feb951b1073858a072d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Activity ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Activity deleted"
+                    },
+                    "404": {
+                        "description": "Activity not found"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login user and get API token",
+                "description": "Authenticate a user with email and password to receive an access token",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@pesisir.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "man3sleman"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|XyZAbcDefGhIjKlMnOpQrStUvWxYz1234567890"
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "Admin User"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "admin@pesisir.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Invalid credentials"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout user",
+                "description": "Invalidate the current access token",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Successfully logged out",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logged out successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/complaints": {
+            "get": {
+                "tags": [
+                    "Complaints"
+                ],
+                "summary": "Get list of complaints",
+                "operationId": "0888e2c7fc7dfed9d2cd561011ade1dd",
+                "responses": {
+                    "200": {
+                        "description": "List of complaints with location"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Complaints"
+                ],
+                "summary": "Create a new complaint",
+                "description": "Store a newly created complaint with location and image",
+                "operationId": "552e12061bd9cb4b042f2ed9c1735c33",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "address",
+                                    "phone",
+                                    "desc",
+                                    "date",
+                                    "image",
+                                    "loc_name",
+                                    "loc_address",
+                                    "lat",
+                                    "long"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Sudirman No. 123"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "example": "08123456789"
+                                    },
+                                    "desc": {
+                                        "type": "string",
+                                        "example": "Illegal trash dumping"
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-09-23"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "loc_name": {
+                                        "type": "string",
+                                        "example": "Kelurahan A"
+                                    },
+                                    "loc_address": {
+                                        "type": "string",
+                                        "example": "Jl. Kenanga, RT 01 RW 02"
+                                    },
+                                    "lat": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -7.8014
+                                    },
+                                    "long": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 110.3647
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Complaint created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/complaints/{id}": {
+            "get": {
+                "tags": [
+                    "Complaints"
+                ],
+                "summary": "Get a single complaint",
+                "operationId": "d63bd2b4f1f4514c3391875c72f8810a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Complaint ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Complaint details"
+                    },
+                    "404": {
+                        "description": "Complaint not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Complaints"
+                ],
+                "summary": "Delete a complaint",
+                "operationId": "b4654fb38217112b6c599a681917b596",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Complaint ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Complaint deleted"
+                    },
+                    "404": {
+                        "description": "Complaint not found"
+                    }
+                }
+            }
+        },
+        "/api/donations": {
+            "get": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Get list of donations",
+                "operationId": "efd463fc838a5d0b3edcc89ecc8374ac",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Create a new donation",
+                "operationId": "a83d56537f533c01a1daf0abefdec913",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "amount",
+                                    "image",
+                                    "method_id"
+                                ],
+                                "properties": {
+                                    "amount": {
+                                        "type": "integer",
+                                        "example": 50000
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "method_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Donation created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Donation"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/donations/{id}": {
+            "get": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Get donation by ID",
+                "operationId": "d70f7a1ae033692540b40f026aa5740e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Donation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donation detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Donation"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Donation not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Donations"
+                ],
+                "summary": "Delete donation",
+                "operationId": "ff34df7029ed4a4fc68e6a59674f9621",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Donation ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donation deleted successfully"
+                    },
+                    "404": {
+                        "description": "Donation not found"
+                    }
+                }
+            }
+        },
+        "/api/donation-methods": {
+            "get": {
+                "tags": [
+                    "Donation Methods"
+                ],
+                "summary": "Get all donation methods",
+                "operationId": "2a6001cf68d4369c0482062e108a2872",
+                "responses": {
+                    "200": {
+                        "description": "List of donation methods",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/DonationMethod"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Donation Methods"
+                ],
+                "summary": "Create a new donation method",
+                "operationId": "770116b118ee8080b28b4e77fcbcaadc",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "method",
+                                    "number",
+                                    "owner"
+                                ],
+                                "properties": {
+                                    "method": {
+                                        "type": "string",
+                                        "example": "BCA"
+                                    },
+                                    "number": {
+                                        "type": "string",
+                                        "example": "1234567890"
+                                    },
+                                    "owner": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Donation method created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DonationMethod"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/donation-methods/{id}": {
+            "get": {
+                "tags": [
+                    "Donation Methods"
+                ],
+                "summary": "Get donation method by ID",
+                "operationId": "8847f29cdb7007bed4dc891d5323d8f8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Donation method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donation method detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DonationMethod"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Donation method not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Donation Methods"
+                ],
+                "summary": "Update donation method",
+                "operationId": "64e3b7706f446cf325d5aaef4d7cbafc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Donation method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "method": {
+                                        "type": "string",
+                                        "example": "BRI"
+                                    },
+                                    "number": {
+                                        "type": "string",
+                                        "example": "9876543210"
+                                    },
+                                    "owner": {
+                                        "type": "string",
+                                        "example": "Jane Doe"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Donation method updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DonationMethod"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Donation method not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Donation Methods"
+                ],
+                "summary": "Delete donation method",
+                "operationId": "b9bda0cc8149e9e50d4a94fba61d8a8b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Donation method ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Donation method deleted"
+                    },
+                    "404": {
+                        "description": "Donation method not found"
+                    }
+                }
+            }
+        },
+        "/api/locations": {
+            "get": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Get all locations",
+                "operationId": "c22aa1cae7ab2b2ad315141d06fec369",
+                "responses": {
+                    "200": {
+                        "description": "List of locations",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Location"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Create a new location",
+                "operationId": "055665bfbdc18cab3dc956925a9000b4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "address",
+                                    "latitude",
+                                    "longitude"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Panti Asuhan Sejahtera"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Merpati No. 10, Jakarta"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "-6.200000"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "106.816666"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Location created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/locations/{id}": {
+            "get": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Get location by ID",
+                "operationId": "bcaac2b6f85e83cdc99139be535c66e6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Location ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Location detail",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Location not found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Update location",
+                "operationId": "3ac5d4120b6fb23f55f179649493a2d8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Location ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Panti Asuhan Damai"
+                                    },
+                                    "address": {
+                                        "type": "string",
+                                        "example": "Jl. Anggrek No. 5, Bandung"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "-6.914744"
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": "107.609810"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Location updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Location"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Location not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Locations"
+                ],
+                "summary": "Delete location",
+                "operationId": "721591ee086203214e6eb54f25625656",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Location ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Location deleted"
+                    },
+                    "404": {
+                        "description": "Location not found"
+                    }
+                }
+            }
+        },
+        "/api/volunteers": {
+            "get": {
+                "tags": [
+                    "Volunteers"
+                ],
+                "summary": "Get list of volunteers",
+                "operationId": "714cc7e971818196443a1351938ab066",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Volunteers"
+                ],
+                "summary": "Create new volunteer",
+                "operationId": "7d3787a79a518ca185be325f57c863cd",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "address",
+                                    "phone",
+                                    "gender",
+                                    "reason_desc",
+                                    "payment_method",
+                                    "act_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "address": {
+                                        "type": "string"
+                                    },
+                                    "phone": {
+                                        "type": "string"
+                                    },
+                                    "gender": {
+                                        "type": "string"
+                                    },
+                                    "reason_desc": {
+                                        "type": "string"
+                                    },
+                                    "payment_method": {
+                                        "type": "string"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "act_id": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Volunteer created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    }
+                }
+            }
+        },
+        "/api/volunteers/{id}": {
+            "get": {
+                "tags": [
+                    "Volunteers"
+                ],
+                "summary": "Get volunteer by ID",
+                "operationId": "4e1b8124c8c58401420b057ba3b6faa8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "Volunteer not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Volunteers"
+                ],
+                "summary": "Delete volunteer by ID",
+                "operationId": "2dfca45f6d7982709ab781954f9f9254",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Volunteer deleted successfully"
+                    },
+                    "404": {
+                        "description": "Volunteer not found"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Donation": {
+                "title": "Donation",
+                "description": "Donation model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "donation_amount": {
+                        "type": "integer",
+                        "example": 50000
+                    },
+                    "image_slip": {
+                        "type": "string",
+                        "example": "donations/slip1.png"
+                    },
+                    "donation_method_id": {
+                        "type": "integer",
+                        "example": 2
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T10:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "DonationMethod": {
+                "title": "Donation Method",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "method_name": {
+                        "type": "string",
+                        "example": "BCA"
+                    },
+                    "account_number": {
+                        "type": "string",
+                        "example": "1234567890"
+                    },
+                    "owner_name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Location": {
+                "title": "Location",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "location_name": {
+                        "type": "string",
+                        "example": "Panti Asuhan Sejahtera"
+                    },
+                    "location_address": {
+                        "type": "string",
+                        "example": "Jl. Merpati No. 10, Jakarta"
+                    },
+                    "latitude": {
+                        "type": "number",
+                        "format": "float",
+                        "example": "-6.200000"
+                    },
+                    "longitude": {
+                        "type": "number",
+                        "format": "float",
+                        "example": "106.816666"
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                },
+                "type": "object"
+            }
+        },
+        "securitySchemes": {
+            "sanctum": {
+                "type": "http",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Activities",
+            "description": "API Endpoints for managing activities"
+        },
+        {
+            "name": "Authentication",
+            "description": "API Endpoints for user authentication"
+        },
+        {
+            "name": "Complaints",
+            "description": "API Endpoints for managing complaints"
+        },
+        {
+            "name": "Donations",
+            "description": "API Endpoints for managing donations"
+        },
+        {
+            "name": "Donation Methods",
+            "description": "API Endpoints for managing donation methods"
+        },
+        {
+            "name": "Locations",
+            "description": "API Endpoints for managing locations"
+        },
+        {
+            "name": "Volunteers",
+            "description": "API Endpoints for managing volunteers"
+        }
+    ]
+}

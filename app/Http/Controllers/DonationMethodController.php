@@ -5,10 +5,36 @@ namespace App\Http\Controllers;
 use App\Models\DonationMethod;
 use Illuminate\Http\Request;
 
+/**
+ * @OA\Tag(
+ *     name="Donation Methods",
+ *     description="API Endpoints for managing donation methods"
+ * )
+ * @OA\Schema(
+ *     schema="DonationMethod",
+ *     type="object",
+ *     title="Donation Method",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="method_name", type="string", example="BCA"),
+ *     @OA\Property(property="account_number", type="string", example="1234567890"),
+ *     @OA\Property(property="owner_name", type="string", example="John Doe"),
+ *     @OA\Property(property="created_at", type="string", format="date-time"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time")
+ * )
+ */
 class DonationMethodController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/api/donation-methods",
+     *     summary="Get all donation methods",
+     *     tags={"Donation Methods"},
+     *     @OA\Response(
+     *         response=200,
+     *         description="List of donation methods",
+     *         @OA\JsonContent(type="array", @OA\Items(ref="#/components/schemas/DonationMethod"))
+     *     )
+     * )
      */
     public function index()
     {
@@ -24,7 +50,25 @@ class DonationMethodController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @OA\Post(
+     *     path="/api/donation-methods",
+     *     summary="Create a new donation method",
+     *     tags={"Donation Methods"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"method", "number", "owner"},
+     *             @OA\Property(property="method", type="string", example="BCA"),
+     *             @OA\Property(property="number", type="string", example="1234567890"),
+     *             @OA\Property(property="owner", type="string", example="John Doe")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Donation method created",
+     *         @OA\JsonContent(ref="#/components/schemas/DonationMethod")
+     *     )
+     * )
      */
     public function store(Request $request)
     {
@@ -44,7 +88,20 @@ class DonationMethodController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @OA\Get(
+     *     path="/api/donation-methods/{id}",
+     *     summary="Get donation method by ID",
+     *     tags={"Donation Methods"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Donation method ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Donation method detail", @OA\JsonContent(ref="#/components/schemas/DonationMethod")),
+     *     @OA\Response(response=404, description="Donation method not found")
+     * )
      */
     public function show(string $id)
     {
@@ -61,7 +118,27 @@ class DonationMethodController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @OA\Put(
+     *     path="/api/donation-methods/{id}",
+     *     summary="Update donation method",
+     *     tags={"Donation Methods"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Donation method ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         @OA\JsonContent(
+     *             @OA\Property(property="method", type="string", example="BRI"),
+     *             @OA\Property(property="number", type="string", example="9876543210"),
+     *             @OA\Property(property="owner", type="string", example="Jane Doe")
+     *         )
+     *     ),
+     *     @OA\Response(response=200, description="Donation method updated", @OA\JsonContent(ref="#/components/schemas/DonationMethod")),
+     *     @OA\Response(response=404, description="Donation method not found")
+     * )
      */
     public function update(Request $request, string $id)
     {
@@ -83,7 +160,20 @@ class DonationMethodController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @OA\Delete(
+     *     path="/api/donation-methods/{id}",
+     *     summary="Delete donation method",
+     *     tags={"Donation Methods"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="Donation method ID",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Donation method deleted"),
+     *     @OA\Response(response=404, description="Donation method not found")
+     * )
      */
     public function destroy(string $id)
     {
