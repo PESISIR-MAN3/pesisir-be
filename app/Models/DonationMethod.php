@@ -14,7 +14,7 @@ class DonationMethod extends Model
         'owner_name'
     ];
 
-    public function donation(){
+    public function donations(){
         return $this->hasMany(Donation::class);
     }
 }

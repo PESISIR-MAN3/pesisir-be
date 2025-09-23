@@ -114,12 +114,12 @@ class ComplaintController extends Controller
                 'location_name'    => $data['loc_name'],
                 'location_address' => $data['loc_address'],
                 'latitude'         => $data['lat'],
-                'longitude'        => $data['lot']
+                'longitude'        => $data['long']
             ]);
         }
 
         // Simpan complaint
-        $complaint = complaint::create([
+        $complaint = Complaint::create([
             'complainant_name'    => $data['name'],
             'complainant_email'   => $data['email'],
             'complainant_address' => $data['address'],
@@ -151,7 +151,7 @@ class ComplaintController extends Controller
      */
     public function show(string $id)
     {
-        $complaint = complaint::with(['location'])->findOrFail($id);
+        $complaint = Complaint::with(['locations'])->findOrFail($id);
         return response()->json($complaint);
     }
 
@@ -189,7 +189,7 @@ class ComplaintController extends Controller
      */
     public function destroy(string $id)
     {
-        $complaint = complaint::find($id);
+        $complaint = Complaint::find($id);
 
         if (!$complaint) {
             return response()->json([

@@ -50,7 +50,7 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        return response()->json(Activity::with('locations', 'volunteers')->get());
+        return response()->json(Activity::with('location', 'volunteers')->get());
     }
 
     /**
@@ -113,7 +113,7 @@ class ActivityController extends Controller
                 'location_name'    => $data['loc_name'],
                 'location_address' => $data['loc_address'],
                 'latitude'         => $data['lat'],
-                'longitude'        => $data['lot']
+                'longitude'        => $data['long']
             ]);
         }
 
@@ -198,34 +198,40 @@ class ActivityController extends Controller
     {
         $activity = Activity::findOrFail($id);
 
+        // Validasi input
         $data = $request->validate([
-            'name'   => 'sometimes|required|string|unique:activities,name,' . $activity->id,
-            'desc'   => 'sometimes|nullable|string',
-            'date'   => 'sometimes|required|date',
-            'time'   => 'sometimes|required|date_format:H:i',
-            'status' => 'sometimes|required|string|in:ongoing,done,upcoming',
-            // 'image'  => 'sometimes|nullable|file|mimes:jpg,jpeg,png|max:10240',
-            'fee'    => 'sometimes|required|integer|min:0',
-            'loc_name' => 'sometimes|required|string',
-            'loc_address' => 'sometimes|required|string',
-            'lat' => 'sometimes|required|numeric|between:-90,90',
-            'long' => 'sometimes|required|numeric|between:-180,180',
+            'name'        => 'sometimes|required|string|unique:activities,name,' . $activity->id,
+            'desc'        => 'sometimes|nullable|string',
+            'date'        => 'sometimes|required|date',
+            'time'        => 'sometimes|required|date_format:H:i',
+            'status'      => 'sometimes|required|string|in:ongoing,done,upcoming',
+            'fee'         => 'sometimes|required|integer|min:0',
+            'loc_name'    => 'sometimes|required_with:loc_address,lat,long|string',
+            'loc_address' => 'sometimes|required_with:loc_name,lat,long|string',
+            'lat'         => 'sometimes|required_with:loc_name,loc_address,long|numeric|between:-90,90',
+            'long'        => 'sometimes|required_with:loc_name,loc_address,lat|numeric|between:-180,180',
         ]);
 
-        $location = Location::where('location_name', $data['loc_name'])
-            ->where('location_address', $data['loc_address'])
-            ->first();
+        // Update atau buat lokasi baru jika data lokasi ada
+        $locationId = $activity->location_id; // default pakai lokasi lama
+        if (isset($data['loc_name'], $data['loc_address'], $data['lat'], $data['long'])) {
+            $location = Location::where('location_name', $data['loc_name'])
+                ->where('location_address', $data['loc_address'])
+                ->first();
 
-        if (!$location) {
-            // Simpan lokasi baru
-            $location = Location::create([
-                'location_name'    => $data['loc_name'],
-                'location_address' => $data['loc_address'],
-                'latitude'         => $data['lat'],
-                'longitude'        => $data['lot']
-            ]);
+            if (!$location) {
+                $location = Location::create([
+                    'location_name'    => $data['loc_name'],
+                    'location_address' => $data['loc_address'],
+                    'latitude'         => $data['lat'],
+                    'longitude'        => $data['long'],
+                ]);
+            }
+
+            $locationId = $location->id;
         }
 
+        // Update activity
         $activity->update([
             'activity_name'   => $data['name']   ?? $activity->activity_name,
             'activity_desc'   => $data['desc']   ?? $activity->activity_desc,
@@ -233,13 +239,13 @@ class ActivityController extends Controller
             'activity_time'   => $data['time']   ?? $activity->activity_time,
             'activity_status' => $data['status'] ?? $activity->activity_status,
             'activity_fee'    => $data['fee']    ?? $activity->activity_fee,
-            'location_id'     => $location->id ?? $activity->location_id,
+            'location_id'     => $locationId,
             // 'image_path'      => $request->hasFile('image')
             //                         ? $request->file('image')->store('activities', 'public')
             //                         : $activity->image_path,
         ]);
 
-        return response()->json($activity->load(['locations', 'volunteers']));
+        return response()->json($activity->load(['location', 'volunteers']));
     }
 
  /**
