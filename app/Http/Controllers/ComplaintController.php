@@ -7,6 +7,25 @@ use App\Models\Complaint;
 use Illuminate\Http\Request;
 
 /**
+ * 
+ * @OA\Schema(
+ *     schema="Complaint",
+ *     type="object",
+ *     title="Complaint",
+ *     description="Complaint model",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="complainant_name", type="string", example="Jane Doe"),
+ *     @OA\Property(property="complainant_email", type="string", format="email", example="janedoe@example.com"),
+ *     @OA\Property(property="complainant_address", type="string", example="Jl. Sudirman No. 20, Jakarta"),
+ *     @OA\Property(property="complainant_phone", type="string", example="+628987654321"),
+ *     @OA\Property(property="complaint_desc", type="string", example="Illegal dumping of waste near the river"),
+ *     @OA\Property(property="actual_date", type="string", format="date", example="2025-09-15"),
+ *     @OA\Property(property="image_path", type="string", example="complaints/12345.png"),
+ *     @OA\Property(property="location_id", type="integer", example=5),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-09-23T10:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-09-23T12:00:00Z")
+ * )
+ * 
  * @OA\Tag(
  *     name="Complaints",
  *     description="API Endpoints for managing complaints"

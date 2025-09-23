@@ -1172,6 +1172,112 @@
     },
     "components": {
         "schemas": {
+            "Activity": {
+                "title": "Activity",
+                "description": "Activity model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "activity_name": {
+                        "type": "string",
+                        "example": "Beach Cleanup"
+                    },
+                    "activity_desc": {
+                        "type": "string",
+                        "example": "A volunteer activity to clean up the beach."
+                    },
+                    "activity_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-10-10"
+                    },
+                    "activity_time": {
+                        "type": "string",
+                        "example": "14:00"
+                    },
+                    "activity_status": {
+                        "type": "string",
+                        "example": "open"
+                    },
+                    "activity_fee": {
+                        "type": "number",
+                        "format": "float",
+                        "example": 50000
+                    },
+                    "location_id": {
+                        "type": "integer",
+                        "example": 3
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
+            "Complaint": {
+                "title": "Complaint",
+                "description": "Complaint model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "complainant_name": {
+                        "type": "string",
+                        "example": "Jane Doe"
+                    },
+                    "complainant_email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "janedoe@example.com"
+                    },
+                    "complainant_address": {
+                        "type": "string",
+                        "example": "Jl. Sudirman No. 20, Jakarta"
+                    },
+                    "complainant_phone": {
+                        "type": "string",
+                        "example": "+628987654321"
+                    },
+                    "complaint_desc": {
+                        "type": "string",
+                        "example": "Illegal dumping of waste near the river"
+                    },
+                    "actual_date": {
+                        "type": "string",
+                        "format": "date",
+                        "example": "2025-09-15"
+                    },
+                    "image_path": {
+                        "type": "string",
+                        "example": "complaints/12345.png"
+                    },
+                    "location_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T12:00:00Z"
+                    }
+                },
+                "type": "object"
+            },
             "Donation": {
                 "title": "Donation",
                 "description": "Donation model",
@@ -1267,6 +1373,64 @@
                     "updated_at": {
                         "type": "string",
                         "format": "date-time"
+                    }
+                },
+                "type": "object"
+            },
+            "Volunteer": {
+                "title": "Volunteer",
+                "description": "Volunteer model",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "volunteer_name": {
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "volunteer_email": {
+                        "type": "string",
+                        "format": "email",
+                        "example": "johndoe@example.com"
+                    },
+                    "volunteer_address": {
+                        "type": "string",
+                        "example": "Jl. Merdeka No. 10, Jakarta"
+                    },
+                    "volunteer_phone": {
+                        "type": "string",
+                        "example": "+628123456789"
+                    },
+                    "volunteer_gender": {
+                        "type": "string",
+                        "example": "male"
+                    },
+                    "reason_desc": {
+                        "type": "string",
+                        "example": "I want to help the community"
+                    },
+                    "payment_method": {
+                        "type": "string",
+                        "example": "Bank Transfer"
+                    },
+                    "image_slip": {
+                        "type": "string",
+                        "example": "volunteers/12345.jpg"
+                    },
+                    "activity_id": {
+                        "type": "integer",
+                        "example": 5
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T10:00:00Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2025-09-23T12:00:00Z"
                     }
                 },
                 "type": "object"

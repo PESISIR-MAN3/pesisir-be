@@ -12,6 +12,23 @@ use Illuminate\Http\Request;
  *     version="1.0.0",
  *     description="API Documentation for Pesisir"
  * )
+ * 
+ * @OA\Schema(
+ *     schema="Activity",
+ *     type="object",
+ *     title="Activity",
+ *     description="Activity model",
+ *     @OA\Property(property="id", type="integer", example=1),
+ *     @OA\Property(property="activity_name", type="string", example="Beach Cleanup"),
+ *     @OA\Property(property="activity_desc", type="string", example="A volunteer activity to clean up the beach."),
+ *     @OA\Property(property="activity_date", type="string", format="date", example="2025-10-10"),
+ *     @OA\Property(property="activity_time", type="string", example="14:00"),
+ *     @OA\Property(property="activity_status", type="string", example="open"),
+ *     @OA\Property(property="activity_fee", type="number", format="float", example=50000),
+ *     @OA\Property(property="location_id", type="integer", example=3),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-09-23T10:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-09-23T12:00:00Z")
+ * )
  *
  * @OA\Tag(
  *     name="Activities",
