@@ -6,6 +6,26 @@ use App\Models\Volunteer;
 use Illuminate\Http\Request;
 
 /**
+ * 
+ * @OA\Schema(
+ *     schema="Volunteer",
+ *     type="object",
+ *     title="Volunteer",
+ *     description="Volunteer model",
+ *     @OA\Property(property="id", type="integer", example=10),
+ *     @OA\Property(property="volunteer_name", type="string", example="John Doe"),
+ *     @OA\Property(property="volunteer_email", type="string", format="email", example="johndoe@example.com"),
+ *     @OA\Property(property="volunteer_address", type="string", example="Jl. Merdeka No. 10, Jakarta"),
+ *     @OA\Property(property="volunteer_phone", type="string", example="+628123456789"),
+ *     @OA\Property(property="volunteer_gender", type="string", example="male"),
+ *     @OA\Property(property="reason_desc", type="string", example="I want to help the community"),
+ *     @OA\Property(property="payment_method", type="string", example="Bank Transfer"),
+ *     @OA\Property(property="image_slip", type="string", example="volunteers/12345.jpg"),
+ *     @OA\Property(property="activity_id", type="integer", example=5),
+ *     @OA\Property(property="created_at", type="string", format="date-time", example="2025-09-23T10:00:00Z"),
+ *     @OA\Property(property="updated_at", type="string", format="date-time", example="2025-09-23T12:00:00Z")
+ * )
+ * 
  * @OA\Tag(
  *     name="Volunteers",
  *     description="API Endpoints for managing volunteers"
