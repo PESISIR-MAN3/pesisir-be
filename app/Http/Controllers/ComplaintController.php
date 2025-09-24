@@ -114,7 +114,7 @@ class ComplaintController extends Controller
                 'location_name'    => $data['loc_name'],
                 'location_address' => $data['loc_address'],
                 'latitude'         => $data['lat'],
-                'longitude'        => $data['lot']
+                'longitude'        => $data['long']
             ]);
         }
 
