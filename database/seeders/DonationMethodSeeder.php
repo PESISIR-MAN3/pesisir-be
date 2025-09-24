@@ -14,7 +14,7 @@ class DonationMethodSeeder extends Seeder
     public function run(): void
     {
         DonationMethod::updateOrCreate(
-             ['method_name' => 'BSI'],
+            ['method_name' => 'BSI'],
             [
                 'account_number' => '7327281881',
                 'owner_name'     => 'Arum Sekar Waradanti',

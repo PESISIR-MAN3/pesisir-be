@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
  *     schema="Location",
  *     type="object",
  *     title="Location",
+ *     description="Location model"
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="location_name", type="string", example="Panti Asuhan Sejahtera"),
  *     @OA\Property(property="location_address", type="string", example="Jl. Merpati No. 10, Jakarta"),
