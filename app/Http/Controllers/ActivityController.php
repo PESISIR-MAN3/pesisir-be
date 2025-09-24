@@ -93,6 +93,7 @@ class ActivityController extends Controller
             'desc'       => 'nullable|string',
             'date'       => 'required|date',
             'time'       => 'required|date_format:H:i',
+            // 'image'  => 'required|file|mimes:jpg,jpeg,png|max:10240',
             'fee'        => 'required|integer|min:10000',
             'loc_name'   => 'required|string',
             'loc_address'=> 'required|string',
@@ -114,6 +115,9 @@ class ActivityController extends Controller
             ]);
         }
 
+        // Upload image
+        // $path = $request->file('image')->store('activities', 'public');
+
         // Tentukan status otomatis berdasarkan tanggal
         $today = now()->toDateString();
 
@@ -130,7 +134,7 @@ class ActivityController extends Controller
             'activity_date'   => $data['date'],
             'activity_time'   => $data['time'],
             'activity_status' => $status,
-            // 'image_path'     => optional kalau pakai upload
+            // 'image_path'     => $path,
             'activity_fee'    => $data['fee'],
             'location_id'     => $location->id
         ]);

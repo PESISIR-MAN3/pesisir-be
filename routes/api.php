@@ -48,4 +48,4 @@ Route::delete('/complaints/{id}',[ComplaintController::class, 'destroy']);
 Route::get('/volunteers', [VolunteerController::class, 'index']);
 Route::post('/volunteers', [VolunteerController::class, 'store']);
 Route::get('/volunteers/{id}', [VolunteerController::class, 'show']);
-Route::delete('/volunteers', [VolunteerController::class, 'destroy']);
+Route::delete('/volunteers/{id}', [VolunteerController::class, 'destroy']);
