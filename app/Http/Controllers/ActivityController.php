@@ -89,49 +89,55 @@ class ActivityController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name'   => 'required|string|unique:activities,activity_name',
-            'desc'   => 'nullable|string',
-            'date'   => 'required|date',
-            'time'   => 'required|date_format:H:i',
-            'status' => 'required|string|in:ongoing,done,upcoming',
-            // 'image'  => 'required|file|mimes:jpg,jpeg,png|max:10240',
-            'fee'    => 'required|integer|min:10000',
-            'loc_name' => 'required|string',
-            'loc_address' => 'required|string',
-            'lat' => 'required|numeric|between:-90,90',
-            'long' => 'required|numeric|between:-180,180',
+            'name'       => 'required|string|unique:activities,activity_name',
+            'desc'       => 'nullable|string',
+            'date'       => 'required|date',
+            'time'       => 'required|date_format:H:i',
+            'fee'        => 'required|integer|min:10000',
+            'loc_name'   => 'required|string',
+            'loc_address'=> 'required|string',
+            'lat'        => 'required|numeric|between:-90,90',
+            'long'       => 'required|numeric|between:-180,180',
         ]);
 
-        // Cek apakah lokasi sudah ada
+        // Cek lokasi, buat baru kalau belum ada
         $location = Location::where('location_name', $data['loc_name'])
             ->where('location_address', $data['loc_address'])
             ->first();
 
         if (!$location) {
-            // Simpan lokasi baru
             $location = Location::create([
                 'location_name'    => $data['loc_name'],
                 'location_address' => $data['loc_address'],
                 'latitude'         => $data['lat'],
-                'longitude'        => $data['lot']
+                'longitude'        => $data['long']
             ]);
         }
 
-        // Upload image
-        // $path = $request->file('image')->store('activities', 'public');
+        // Tentukan status otomatis berdasarkan tanggal
+        $today = now()->toDateString();
 
+        $status = match (true) {
+            $data['date'] < $today => 'done',
+            $data['date'] == $today => 'ongoing',
+            default => 'upcoming'
+        };
+
+        // Buat activity
         $activity = Activity::create([
-            'activity_name' => $data['name'],
-            'activity_desc' => $data['desc'],
-            'activity_date' => $data['date'],
-            'activity_time' => $data['time'],
-            'activity_status' => $data['status'],
-            // 'image_path' => $path,
-            'activity_fee' => $data['fee'],
-            'location_id' => $location->id
+            'activity_name'   => $data['name'],
+            'activity_desc'   => $data['desc'],
+            'activity_date'   => $data['date'],
+            'activity_time'   => $data['time'],
+            'activity_status' => $status,
+            // 'image_path'     => optional kalau pakai upload
+            'activity_fee'    => $data['fee'],
+            'location_id'     => $location->id
         ]);
+
         return response()->json($activity->load(['location']), 201);
     }
+
 
     /**
      * @OA\Get(
