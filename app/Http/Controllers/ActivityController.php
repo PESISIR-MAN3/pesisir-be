@@ -213,7 +213,6 @@ class ActivityController extends Controller
             'desc'   => 'sometimes|nullable|string',
             'date'   => 'sometimes|required|date',
             'time'   => 'sometimes|required|date_format:H:i',
-            'status' => 'sometimes|required|string|in:ongoing,done,upcoming',
             // 'image'  => 'sometimes|nullable|file|mimes:jpg,jpeg,png|max:10240',
             'fee'    => 'sometimes|required|integer|min:0',
             'loc_name' => 'sometimes|required|string',
@@ -222,18 +221,33 @@ class ActivityController extends Controller
             'long' => 'sometimes|required|numeric|between:-180,180',
         ]);
 
-        $location = Location::where('location_name', $data['loc_name'])
-            ->where('location_address', $data['loc_address'])
-            ->first();
+        // Cek lokasi, buat baru kalau belum ada
+        $location = null;
+        if (isset($data['loc_name'], $data['loc_address'])) {
+            $location = Location::where('location_name', $data['loc_name'])
+                ->where('location_address', $data['loc_address'])
+                ->first();
 
-        if (!$location) {
-            // Simpan lokasi baru
-            $location = Location::create([
-                'location_name'    => $data['loc_name'],
-                'location_address' => $data['loc_address'],
-                'latitude'         => $data['lat'],
-                'longitude'        => $data['long']
-            ]);
+            if (!$location) {
+                $location = Location::create([
+                    'location_name'    => $data['loc_name'],
+                    'location_address' => $data['loc_address'],
+                    'latitude'         => $data['lat'] ?? 0,
+                    'longitude'        => $data['long'] ?? 0
+                ]);
+            }
+        }
+
+        // Tentukan status otomatis jika ada perubahan tanggal
+        $status = $activity->activity_status;
+        if (isset($data['date'])) {
+            $today = now()->toDateString();
+
+            $status = match (true) {
+                $data['date'] < $today => 'done',
+                $data['date'] == $today => 'ongoing',
+                default => 'upcoming'
+            };
         }
 
         $activity->update([
@@ -241,9 +255,9 @@ class ActivityController extends Controller
             'activity_desc'   => $data['desc']   ?? $activity->activity_desc,
             'activity_date'   => $data['date']   ?? $activity->activity_date,
             'activity_time'   => $data['time']   ?? $activity->activity_time,
-            'activity_status' => $data['status'] ?? $activity->activity_status,
+            'activity_status' => $status,
             'activity_fee'    => $data['fee']    ?? $activity->activity_fee,
-            'location_id'     => $location->id ?? $activity->location_id,
+            'location_id'     => $location->id   ?? $activity->location_id,
             // 'image_path'      => $request->hasFile('image')
             //                         ? $request->file('image')->store('activities', 'public')
             //                         : $activity->image_path,

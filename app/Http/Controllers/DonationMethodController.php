@@ -146,15 +146,15 @@ class DonationMethodController extends Controller
         $donation_method = DonationMethod::findOrFail($id);
 
         $data = $request->validate([
-            'name'      => 'sometimes|required|string|unique:locations,location_name,' . $id,
-            'number'   => 'sometimes|required|string|unique:locations,location_address,' . $id,
-            'owner'  => 'sometimes|required|numeric|between:-90,90',
+            'name'      => 'sometimes|required|string' . $id,
+            'number'   => 'sometimes|required|integer,' . $id,
+            'owner'  => 'sometimes|required|string',
         ]);
 
         $donation_method->update([
             'method_name'    => $data['name']      ?? $donation_method->method_name,
             'account_number' => $data['number']   ?? $donation_method->account_number,
-            'owner_name'         => $data['owner']  ?? $donation_method->owner_name,
+            'owner_name'     => $data['owner']  ?? $donation_method->owner_name,
         ]);
 
         return response()->json($donation_method->refresh(), 200);
