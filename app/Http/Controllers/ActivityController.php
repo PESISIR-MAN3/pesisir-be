@@ -50,7 +50,7 @@ class ActivityController extends Controller
      */
     public function index()
     {
-        return response()->json(Activity::with('locations', 'volunteers')->get());
+        return response()->json(Activity::with('location', 'volunteers')->get());
     }
 
     /**
