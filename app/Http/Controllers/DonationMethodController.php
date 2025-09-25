@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
  *     schema="DonationMethod",
  *     type="object",
  *     title="Donation Method",
- *     description="Donation Method model"
+ *     description="Donation Method model",
  *     @OA\Property(property="id", type="integer", example=1),
  *     @OA\Property(property="method_name", type="string", example="BCA"),
  *     @OA\Property(property="account_number", type="string", example="1234567890"),
