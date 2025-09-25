@@ -209,7 +209,7 @@ class ActivityController extends Controller
         $activity = Activity::findOrFail($id);
 
         $data = $request->validate([
-            'name'   => 'sometimes|required|string|unique:activities,name,' . $activity->id,
+            'name'   => 'sometimes|required|string|unique:activities,activity_name,' . $activity->id,
             'desc'   => 'sometimes|nullable|string',
             'date'   => 'sometimes|required|date',
             'time'   => 'sometimes|required|date_format:H:i',
