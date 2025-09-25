@@ -21,7 +21,7 @@ class Volunteer extends Model
         'activity_id'
     ];
 
-    public function activities(){
+    public function activity(){
         return $this->belongsTo(Activity::class);
     }
 }

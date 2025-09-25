@@ -263,7 +263,7 @@ class ActivityController extends Controller
             //                         : $activity->image_path,
         ]);
 
-        return response()->json($activity->load(['locations', 'volunteers']));
+        return response()->json($activity->load(['location', 'volunteers']));
     }
 
  /**
