@@ -214,7 +214,7 @@ class ActivityController extends Controller
             'date'   => 'sometimes|required|date',
             'time'   => 'sometimes|required|date_format:H:i',
             // 'image'  => 'sometimes|nullable|file|mimes:jpg,jpeg,png|max:10240',
-            'fee'    => 'sometimes|required|integer|min:0',
+            'fee'    => 'sometimes|required|integer|min:10000',
             'loc_name' => 'sometimes|required|string',
             'loc_address' => 'sometimes|required|string',
             'lat' => 'sometimes|required|numeric|between:-90,90',
