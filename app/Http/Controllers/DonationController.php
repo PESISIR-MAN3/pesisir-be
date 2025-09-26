@@ -41,7 +41,10 @@ class DonationController extends Controller
      */
     public function index()
     {
-        return response()->json(Donation::all());
+        return response()->json(
+            Donation::orderBy('id', 'desc')
+            ->get()
+        );
     }
 
     /**

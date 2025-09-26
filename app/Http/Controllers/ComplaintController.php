@@ -46,7 +46,10 @@ class ComplaintController extends Controller
      */
     public function index()
     {
-        return response()->json(Complaint::with('location')->get());
+        return response()->json(
+            Complaint::with('location')
+            ->orderBy('id', 'desc')
+            ->get());
     }
 
     /**

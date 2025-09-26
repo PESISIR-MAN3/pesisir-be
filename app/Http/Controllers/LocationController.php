@@ -40,7 +40,8 @@ class LocationController extends Controller
      */
     public function index()
     {
-        return response()->json(Location::all());
+        return response()->json(
+            Location::orderBy('id', 'desc')->get());
     }
 
     /**

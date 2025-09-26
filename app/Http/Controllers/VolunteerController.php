@@ -46,7 +46,10 @@ class VolunteerController extends Controller
      */
     public function index()
     {
-        return response()->json(Volunteer::with('activity')->get());
+        return response()->json(
+            Volunteer::with('activity')
+            ->orderBy('id', 'desc')
+            ->get());
     }
 
     /**
